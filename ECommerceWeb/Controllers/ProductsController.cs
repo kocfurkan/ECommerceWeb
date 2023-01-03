@@ -84,8 +84,7 @@ namespace ECommerceWeb.Controllers
         }
 
         // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Products products, HttpPostedFileBase productImage)
@@ -94,16 +93,16 @@ namespace ECommerceWeb.Controllers
             {
                 db.Entry(products).State = EntityState.Modified;
                 db.SaveChanges();
-                //if (productImage != null)
-                //{
-                //    string file = Path.Combine(Server.MapPath("~/Images/"), products.ProductId + ".jpg");
-                //    FileInfo fileInfo = new FileInfo(file);
-                //    fileInfo.Delete();
-                   
-                //}
-                //string file2 = Path.Combine(Server.MapPath("~/Images/"), products.ProductId + ".jpg");
-                //productImage.SaveAs(file2);
-                return RedirectToAction("Index");
+				if (productImage != null)
+				{
+					string file = Path.Combine(Server.MapPath("~/Images/"), products.ProductId + ".jpg");
+                    //    FileInfo fileInfo = new FileInfo(file);
+                    //    fileInfo.Delete();
+                    productImage.SaveAs(file);
+                }
+				//string file2 = Path.Combine(Server.MapPath("~/Images/"), products.ProductId + ".jpg");
+				
+				return RedirectToAction("Index");
             }
             ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", products.CategoryId);
             return View(products);
@@ -144,13 +143,6 @@ namespace ECommerceWeb.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+      
     }
 }

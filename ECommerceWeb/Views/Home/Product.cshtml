@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@using ECommerceWeb.Models
+@model Products
+
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">E-Commerce</h1>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-8">
+        
+        <div class="row">
+            <div class="col-md-3">
+                <h2>Categories</h2>
+                <ul class="list-group">
+                    @foreach (Categories item in (List<Categories>)ViewBag.Categories)
+                    {
+                        @Html.ActionLink(item.Name, "Category", new { id = item.CategoryId }, new { @class = "list-group-item list-group-item-action" })
+                    }
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <h2>Product</h2>
+                <div class="card" style="width: 18rem;">
+                    <img src="~/Images/@(Model.ProductId + ".jpg")" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Name</h5>
+                        <p class="card-text">@Model.Description </p>
+                        <p>   <span style="float:right">@Model.Price $</span></p>
+                        @using (Html.BeginForm("AddToCart", "Cart"))
+                        {
+                            @Html.HiddenFor(x => x.ProductId)
+                            <input type="number" value="1" name="quantity" id="quantity" />
+                            <input type="submit" class="btn btn-primary" value="Add To Cart" name="addToCart" id="addToCart" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
