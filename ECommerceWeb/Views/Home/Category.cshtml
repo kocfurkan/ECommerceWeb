@@ -6,11 +6,11 @@
 @using ECommerceWeb.Models
 @model List<Products>
 <link href="~/Content/styles.css" rel="stylesheet" />
-<div class="p-5 mb-4 bg-light rounded-3">
+<div class="p-3 mb-7 bg-light rounded-3">
     <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold">Custom jumbotron</h1>
-        <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. Check out the examples below for how you can remix and restyle it to your liking.</p>
-        <button class="btn btn-primary btn-lg" type="button">Example button</button>
+        <h1 class="display-5 fw-bold">
+            @category.Name
+        </h1>
     </div>
 </div>
 
@@ -25,19 +25,22 @@
         </ul>
 
     </div>
+
     <div class="col-md-8">
-        <h2>Products</h2>
-        <div class="row">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
             @foreach (Products item in Model)
             {
-                <div class="col-md-4" style="border:1px solid;">
-                    <h5>@item.Name</h5>
-                    <img src="~/Images/@(item.ProductId + ".jpg")" class="img-thumbnail "  />
-                    <div class="row">
-                        <div class="col-md-6"> <p> <a href="Home/Product/@item.ProductId" class="btn btn-primary">Details</a></p></div>
-                        <div class="col-md-6">  <span style="float:right">@item.Price $</span></div>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <img src="~/Images/@(item.ProductId + ".jpg")" class="card-img-top" alt="...">
+                            <div class="row">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">@item.Description</p>
+                                <p> <a href="/Home/Product/@item.ProductId" class="btn btn-primary stretched-link"> Add To Cart </a>   <span style="float:right">@item.Price $</span></p>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             }
         </div>

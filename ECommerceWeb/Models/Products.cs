@@ -25,7 +25,7 @@ namespace ECommerceWeb.Models
         public string Name { get; set; }
         public int CategoryId { get; set; }
         public string Description { get; set; }
-        public short Price { get; set; }
+        public int Price { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Carts> Carts { get; set; }

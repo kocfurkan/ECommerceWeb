@@ -3,11 +3,9 @@
 }
 @using ECommerceWeb.Models
 
-<div class="p-5 mb-4 bg-light rounded-3">
+<div class="p-3 mb-6 bg-light rounded-4">
     <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold">E-Commerce</h1>
-
-
+        <h1 class="display-7 fw-bold">E-Commerce</h1>
     </div>
 </div>
 
@@ -22,7 +20,9 @@
         </ul>
 
     </div>
+
     <div class="col-md-8">
+        <h2>Products</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             @foreach (Products item in (List<Products>)ViewBag.Products)
             {
@@ -33,7 +33,7 @@
                             <div class="row">
                                 <h5 class="card-title">@item.Name</h5>
                                 <p class="card-text">@item.Description</p>
-                                <p> <a href="Home/Product/@item.ProductId" class="btn btn-primary"> Add To Cart </a>   <span style="float:right">@item.Price $</span></p>
+                                <p> <a href="/Home/Product/@item.ProductId" class="btn btn-primary stretched-link"> Add To Cart </a><span style="float:right">@item.Price $</span></p>
                             </div>
                         </div>
                     </div>
@@ -41,5 +41,4 @@
             }
         </div>
     </div>
-  
 </div>
