@@ -11,43 +11,87 @@
 </div>
 
 <div class="row">
-
-    <div class="col-md-8 ">
-
+    <div class="col-md-12 ">
         <div class="row">
-            <div class="col-md-3">
-                <h2 >Categories</h2>
-                <ul class="list-group">
-                    @foreach (Categories item in (List<Categories>)ViewBag.Categories)
-                    {
-                        @Html.ActionLink(item.Name, "Category", new { id = item.CategoryId }, new { @class = "list-group-item list-group-item-action " })
-                    }
-                </ul>
-            </div>
-            <div class="col-md-9 p-1">
-                <h2>Product</h2>
-             
-                <div class="card mb-3 " style="max-width: 800px;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="~/Images/@(Model.ProductId + ".jpg")" class="img-fluid rounded-start" alt="...">
-                        </div>
-                        <div class="col-md-8 ">
-                            <div class="card-body ">
-                                <h5 class="card-title">@Model.Name</h5>
-                                <p class="card-text">@Model.Description</p>
-                                <p style="float:right">@Model.Price $</p>
-                                @using (Html.BeginForm("AddToCart", "Cart"))
-                                {
-                                    @Html.HiddenFor(x => x.ProductId)
-                                    <input type="number" value="1" name="quantity" id="quantity" class="form-control mb-1 w-50"/>
-                                    <input type="submit" class="btn btn-primary " value="Add To Cart" name="addToCart" id="addToCart" />
-                                }
+          
+            <div class="container mt-5 mb-5">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-2">
+                        <h2>Categories</h2>
+                        <ul class="list-group">
+                            @foreach (Categories item in (List<Categories>)ViewBag.Categories)
+                            {
+                                @Html.ActionLink(item.Name, "Category", new { id = item.CategoryId }, new { @class = "list-group-item list-group-item-action " })
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card-img  ">
+                                        <div class="text-center p-6">  <img src="~/Images/@(Model.ProductId + ".jpg")" class="img-fluid rounded-start  " alt="..." width="300"> </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="product p-4">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i> <span class="ml-1">Back</span> </div> <i class="fa fa-shopping-cart text-muted"></i>
+                                        </div>
+                                        <div class="mt-4 mb-3">
+                                            <span class="text-uppercase text-muted brand">@Model.Categories.Name</span>
+                                            <h5 class="text-uppercase">@Model.Name</h5>
+                                            <div class="price d-flex flex-row align-items-center">
+                                                <span class="act-price">@Model.Price $</span>
+                                          
+                                            </div>
+                                        </div>
+                                        <p class="about">@Model.Description</p>
+                                     
+                                        @using (Html.BeginForm("AddToCart", "Cart"))
+                                        {
+                                            @Html.HiddenFor(x => x.ProductId)
+
+                                            <input type="number" value="1" name="quantity" id="quantity" class="form-control mb-1 w-50" />
+                                            <input type="submit" class="btn btn-primary float-right" value="Add To Cart" name="addToCart" id="addToCart" />
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
+
+
+
+@*<div class="col-md-9 p-1">
+        <h2>Product</h2>
+
+        <div class="card mb-3 w-100 " >
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="~/Images/@(Model.ProductId + ".jpg")" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8 ">
+                    <div class="card-body ">
+                        <h5 class="card-title">@Model.Name</h5>
+                        <p class="card-text">@Model.Description</p>
+                        <p>@Model.Price $</p>
+                        @using (Html.BeginForm("AddToCart", "Cart"))
+                        {
+                            @Html.HiddenFor(x => x.ProductId)
+
+                            <input type="number" value="1" name="quantity" id="quantity" class="form-control mb-1 w-50" />
+                            <input type="submit" class="btn btn-primary float-right" value="Add To Cart" name="addToCart" id="addToCart" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@

@@ -72,7 +72,6 @@ namespace ECommerceWeb.Controllers
 			db.Carts.Remove(myCart);
 			db.SaveChanges();
 			return RedirectToAction("Index");
-
 		}
 	}
 }

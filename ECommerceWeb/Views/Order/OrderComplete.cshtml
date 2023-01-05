@@ -1,0 +1,210 @@
+﻿@model  ECommerceWeb.Models.Orders
+@{
+    ViewBag.Title = "OrderComplete";
+}
+
+<h2>OrderComplete</h2>
+
+<form action="@ViewBag.PostURL" method="post">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div>
+                Contact
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IdNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.IdNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <p>Card Details</p>
+            <div class="form-group">
+                <label class="control-label col-md-6" for="kartisimsoysisim">Name Surname</label>
+                <div class="col-md-6">
+                    <input autocomplete="off" name="kartisimsoysisim" type="text" maxlength="255" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-6 " for="Ad">Card Number</label>
+                <div class="col-md-6">
+                    <input autocomplete="off" id="contact-email" name="pan" type="text" value="5571135571135575" class="form-control" />
+                    <input type="hidden" name="clientid" value="@ViewBag.ClientId">
+                    <input type="hidden" name="oid" value="@ViewBag.Oid">
+                    <input type="hidden" name="okUrl" value="@ViewBag.okUrl">
+                    <input type="hidden" name="failUrl" value="@ViewBag.failUrl">
+                    <input type="hidden" name="islemtipi" value="@ViewBag.TransActionType">
+                    <input type="hidden" name="rnd" value="@ViewBag.RDN">
+                    <input type="hidden" id="hash" name="hash" value="@ViewBag.Hash">
+                    <input type="hidden" name="storetype" value="@ViewBag.StoreType">
+                    <input type="hidden" name="refreshtime" value="10">
+                    <input type="hidden" name="lang" value="@ViewBag.Lang">
+                    <input type="hidden" name="currency" value="949">
+                    <input type="hidden" name="amount" value="@ViewBag.Amount" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-6" for="kartisimsoysisim">Expiration Date</label>
+                <div class="col-md-6">
+                    <select class="sec form-control " style="float:left;width:75px;" name="Ecom_Payment_Card_ExpDate_Month">
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12" selected="selected">12</option>
+                    </select>
+                    <select class="sec form-control" style="float:left;width:75px;" name="Ecom_Payment_Card_ExpDate_Year">
+                        <option value="17">17</option>
+                        <option value="18" selected="selected">18</option>
+                        <option value="19">19</option>
+                        <option value="20">20</option>
+                        <option value="21">21</option>
+                        <option value="22">22</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label col-md-6" for="CVC">CVC</label>
+                        <input class="form-control w-25" autocomplete="off" id="contact-phone" name="cvCode" type="text" value="000" />
+                    </div>
+                </div>
+            </div>
+         
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6 m-1">
+                    <input class="btn btn-primary" type="submit" value="Complete Order" />
+                    <p class="">
+                        Kart 3D Secure Şifresi : a
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+@*<div class="col-lg-5">
+
+        <div class="card bg-primary text-white rounded-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0">Card details</h5>
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+                         class="img-fluid rounded-3" style="width: 45px;" alt="Avatar">
+                </div>
+                <p class="small mb-2">Card type</p>
+                <a href="#!" type="submit" class="text-white">
+                    <i class="fab fa-cc-mastercard fa-2x me-2"></i>
+                </a>
+                <a href="#!" type="submit" class="text-white">
+                    <i class="fab fa-cc-visa fa-2x me-2"></i>
+                </a>
+                <a href="#!" type="submit" class="text-white">
+                    <i class="fab fa-cc-amex fa-2x me-2"></i>
+                </a>
+                <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
+
+                <form class="mt-4">
+                    <div class="form-outline form-white mb-4">
+                        <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
+                               placeholder="Cardholder's Name" />
+                        <label class="form-label" for="typeName">Cardholder's Name</label>
+                    </div>
+                    <div class="form-outline form-white mb-4">
+                        <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
+                               placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
+                        <label class="form-label" for="typeText">Card Number</label>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-outline form-white">
+                                <input type="text" id="typeExp" class="form-control form-control-lg"
+                                       placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7" />
+                                <label class="form-label" for="typeExp">Expiration</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-outline form-white">
+                                <input type="password" id="typeText" class="form-control form-control-lg"
+                                       placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
+                                <label class="form-label" for="typeText">Cvv</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+                <hr class="my-4">
+
+                <div class="d-flex justify-content-between">
+                    <p class="mb-2">Subtotal</p>
+                    <p class="mb-2">@Model.Sum(x => x.TotalPrice) $</p>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <p class="mb-2">Shipping</p>
+                    <p class="mb-2">$20.00</p>
+                </div>
+
+                <div class="d-flex justify-content-between mb-4">
+                    <p class="mb-2">Total(Incl. taxes)</p>
+                    <p class="mb-2">@Model.Sum(x => x.TotalPrice) $</p>
+                </div>
+
+                <button type="button" class="btn btn-info btn-block btn-lg">
+                    <div class="d-flex justify-content-between">
+                        <span>@Model.Sum(x => x.TotalPrice) $</span>
+                        <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                    </div>
+                </button>
+
+            </div>
+        </div>
+
+    </div>*@
