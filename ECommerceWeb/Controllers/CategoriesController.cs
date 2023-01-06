@@ -4,25 +4,40 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using ECommerceWeb.Models;
+using Newtonsoft.Json;
 
 namespace ECommerceWeb.Controllers
 {
     public class CategoriesController : Controller
     {
         private ECommerceEntities db = new ECommerceEntities();
-
+        //Used for connecting API
+        HttpClient client = new HttpClient();
         // GET: Categories
         public ActionResult Index()
         {
-            return View(db.Categories.ToList());
+            List<Categories> categories = new List<Categories>();
+            client.BaseAddress = new Uri("https://localhost:44321/api/");
+            var response =client.GetAsync("Category");  //Add to uri for reaching controller action.
+            response.Wait(); //Wait for response
+            var result = response.Result;  //Save the response
+            if(result.IsSuccessStatusCode)  //If Response Code Is OK
+            {
+                var data = result.Content.ReadAsStringAsync();  //Read Json as String
+                data.Wait();
+                categories = JsonConvert.DeserializeObject<List<Categories>>(data.Result); //Convert it to required data type
+            }
+            return View(categories);
         }
 
         // GET: Categories/Details/5
         public ActionResult Details(int? id)
         {
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -49,8 +64,17 @@ namespace ECommerceWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Categories.Add(categories);
-                db.SaveChanges();
+                //Async Post Through API
+                client.BaseAddress = new Uri("https://localhost:44321/api/");
+                var response = HttpClientExtensions.PostAsJsonAsync<Categories>(client, "Category", categories);
+                response.Wait();
+                var result = response.Result;
+                if(result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                //db.Categories.Add(categories);
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
