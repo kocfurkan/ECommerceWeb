@@ -5,21 +5,40 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ECommerceWeb.Models;
+using Newtonsoft.Json;
 
 namespace ECommerceWeb.Controllers
 {
     public class ProductsController : Controller
     {
         private ECommerceEntities db = new ECommerceEntities();
-
+        HttpClient client = new HttpClient();
+        public Task<HttpResponseMessage> response;
+        public HttpResponseMessage result;
         // GET: Products
         public ActionResult Index()
         {
-            var products = db.Products.Include(p => p.Categories);
-            return View(products.ToList());
+            List<Products> products = new List<Products>();
+            client.BaseAddress = new Uri("https://localhost:44321/api/"); //add base address to client
+            response =client.GetAsync("Product");  //Add base uri for reaching controller action.
+            response.Wait(); //Wait for response
+            result = response.Result;  //Save the response
+            if(result.IsSuccessStatusCode)  //If Response Code Is OK
+            {
+                var data = result.Content.ReadAsStringAsync();  //Read Json as String
+                data.Wait();
+                products = JsonConvert.DeserializeObject<List<Products>>(data.Result); //Convert it to required data type
+            }
+            for (int i = 0; i < products.Count; i++)
+            {
+                products[i].Categories= db.Categories.Find(products[i].CategoryId);
+            }
+            return View(products);
         }
 
         // GET: Products/Details/5
@@ -29,7 +48,7 @@ namespace ECommerceWeb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Products products = db.Products.Find(id);
+            Products products = FindProduct(id);
             if (products == null)
             {
                 return HttpNotFound();
@@ -53,13 +72,24 @@ namespace ECommerceWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Products.Add(products);
-                db.SaveChanges();
-                if (productImage != null)
+                client.BaseAddress = new Uri("https://localhost:44321/api/");
+                response = HttpClientExtensions.PostAsJsonAsync<Products>(client, "Product", products);
+                response.Wait();
+                result = response.Result;
+                if (result.IsSuccessStatusCode)
                 {
-                    string file = Path.Combine(Server.MapPath("~/Images/"), products.ProductId + ".jpg");
-                    productImage.SaveAs(file);
+                    if (productImage != null)
+                    {
+                        var data = result.Content.ReadAsAsync<Products>();
+                        data.Wait();
+                        Products products1 = data.Result;
+                        string file = Path.Combine(Server.MapPath("~/Images/"), products1.ProductId + ".jpg");
+                        productImage.SaveAs(file);
+                    }
+                    return RedirectToAction("Index");
+
                 }
+               
                 return RedirectToAction("Index");
             }
 
@@ -74,7 +104,7 @@ namespace ECommerceWeb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Products products = db.Products.Find(id);
+            Products products = FindProduct(id);
             if (products == null)
             {
                 return HttpNotFound();
@@ -143,6 +173,23 @@ namespace ECommerceWeb.Controllers
             return RedirectToAction("Index");
         }
 
-      
+        private Products FindProduct(int? id)
+        {
+            Products product = null;
+            client.BaseAddress = new Uri("https://localhost:44321/api/");
+            response = client.GetAsync("Product/" + id.ToString());
+            response.Wait();
+            result = response.Result;
+            if (result.IsSuccessStatusCode)
+            {
+                var data = result.Content.ReadAsAsync<Products>();
+                data.Wait();
+                product = data.Result;
+            }
+
+            return product;
+        }
+
+
     }
 }

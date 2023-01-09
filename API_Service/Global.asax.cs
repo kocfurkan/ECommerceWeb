@@ -16,7 +16,7 @@ namespace API_Service
         {
 
             // Code that runs on application startup
- 
+            
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);    

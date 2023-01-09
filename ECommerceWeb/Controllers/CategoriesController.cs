@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ECommerceWeb.Models;
@@ -14,17 +15,19 @@ namespace ECommerceWeb.Controllers
 {
     public class CategoriesController : Controller
     {
-        private ECommerceEntities db = new ECommerceEntities();
+     
         //Used for connecting API
         HttpClient client = new HttpClient();
+        public Task<HttpResponseMessage> response;
+        public HttpResponseMessage result;
         // GET: Categories
         public ActionResult Index()
         {
             List<Categories> categories = new List<Categories>();
-            client.BaseAddress = new Uri("https://localhost:44321/api/");
-            var response =client.GetAsync("Category");  //Add to uri for reaching controller action.
+            client.BaseAddress = new Uri("https://localhost:44321/api/"); //add base address to client
+            response =client.GetAsync("Category");  //Add base uri for reaching controller action.
             response.Wait(); //Wait for response
-            var result = response.Result;  //Save the response
+            result = response.Result;  //Save the response
             if(result.IsSuccessStatusCode)  //If Response Code Is OK
             {
                 var data = result.Content.ReadAsStringAsync();  //Read Json as String
@@ -37,12 +40,12 @@ namespace ECommerceWeb.Controllers
         // GET: Categories/Details/5
         public ActionResult Details(int? id)
         {
-            
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Categories categories = db.Categories.Find(id);
+            Categories categories = FindCategory(id);
             if (categories == null)
             {
                 return HttpNotFound();
@@ -66,9 +69,9 @@ namespace ECommerceWeb.Controllers
             {
                 //Async Post Through API
                 client.BaseAddress = new Uri("https://localhost:44321/api/");
-                var response = HttpClientExtensions.PostAsJsonAsync<Categories>(client, "Category", categories);
+                response = HttpClientExtensions.PostAsJsonAsync<Categories>(client, "Category", categories);
                 response.Wait();
-                var result = response.Result;
+                result = response.Result;
                 if(result.IsSuccessStatusCode)
                 {
                     return RedirectToAction("Index");
@@ -88,7 +91,7 @@ namespace ECommerceWeb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Categories categories = db.Categories.Find(id);
+            Categories categories = FindCategory(id);   
             if (categories == null)
             {
                 return HttpNotFound();
@@ -104,9 +107,17 @@ namespace ECommerceWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(categories).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                client.BaseAddress = new Uri("https://localhost:44321/api/");
+                response = client.PutAsJsonAsync<Categories>("Category",categories);
+                response.Wait();
+                result=response.Result;
+                if(result.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                //db.Entry(categories).State = EntityState.Modified;
+                //db.SaveChanges();
+                return View(categories);    
             }
             return View(categories);
         }
@@ -118,7 +129,8 @@ namespace ECommerceWeb.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Categories categories = db.Categories.Find(id);
+            Categories categories = FindCategory(id);
+
             if (categories == null)
             {
                 return HttpNotFound();
@@ -131,19 +143,33 @@ namespace ECommerceWeb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Categories categories = db.Categories.Find(id);
-            db.Categories.Remove(categories);
-            db.SaveChanges();
+            client.BaseAddress = new Uri("https://localhost:44321/api/");
+            response = client.DeleteAsync("Category/" + id.ToString());
+            response.Wait();
+            result = response.Result;
+            if (result.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+     
+        private Categories FindCategory(int? id)
         {
-            if (disposing)
+            Categories categories = null;
+            client.BaseAddress = new Uri("https://localhost:44321/api/");
+            response = client.GetAsync("Category/" + id.ToString());
+            response.Wait();
+            result = response.Result;
+            if (result.IsSuccessStatusCode)
             {
-                db.Dispose();
+                var data = result.Content.ReadAsAsync<Categories>();
+                data.Wait();
+                categories = data.Result;
             }
-            base.Dispose(disposing);
+
+            return categories;
         }
     }
 }

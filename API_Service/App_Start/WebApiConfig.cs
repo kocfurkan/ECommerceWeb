@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Xml;
 
 namespace API_Service
 {
@@ -12,8 +15,11 @@ namespace API_Service
             // Web API configuration and services
 
             // Web API routes
+
+  
+
             config.MapHttpAttributeRoutes();
-            var json = config.Formatters.JsonFormatter;
+       
 
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);

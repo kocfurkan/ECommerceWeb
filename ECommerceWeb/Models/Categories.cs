@@ -11,8 +11,7 @@ namespace ECommerceWeb.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-
+    
     public partial class Categories
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,8 +19,7 @@ namespace ECommerceWeb.Models
         {
             this.Products = new HashSet<Products>();
         }
-        
-        [DisplayName("Category")]
+    
         public int CategoryId { get; set; }
         public string Name { get; set; }
     
